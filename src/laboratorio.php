@@ -83,15 +83,15 @@ include_once "includes/header.php";
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="laboratorio" class="text-dark font-weight-bold">laboratorio</label>
-                                <input type="text" placeholder="Ingrese laboratorio" name="laboratorio" id="laboratorio" class="form-control">
+                                <label for="laboratorio" class="text-dark font-weight-bold">Metodo de pago</label>
+                                <input type="text" placeholder="Ingrese Selecciones metodo de pago" name="laboratorio" id="laboratorio" class="form-control">
                                 <input type="hidden" name="id" id="id">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="direccion" class="text-dark font-weight-bold">Dirección</label>
-                                <input type="text" placeholder="Ingrese Dirección" name="direccion" id="direccion" class="form-control">
+                                <label for="direccion" class="text-dark font-weight-bold">Valor</label>
+                                <input type="text" placeholder="Ingrese valor a pagar" name="direccion" id="direccion" class="form-control">
                             </div>
                         </div>
                         <div class="col-md-4 mt-4">

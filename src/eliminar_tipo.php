@@ -12,5 +12,5 @@ if (!empty($_GET['id'])) {
     $id = $_GET['id'];
     $query_delete = mysqli_query($conexion, "DELETE FROM tipos WHERE id = $id");
     mysqli_close($conexion);
-    header("Location: tipo.php");
+    header("Location:info_deportista.php");
 }

@@ -12,10 +12,21 @@ session_start();
 include_once "includes/header.php";
 ?>
 
+<?php
+$consulta = "SELECT * FROM misvideos";
+$resultados = mysqli_query($conexion, $consulta);
 
-<video width="320" height="240"  autoplay controls>
-    <source src="assets/img/[freemake.com LOGO] NBAPau.ogv" type="video/ogg">
+while ($fila = mysqli_fetch_array($resultados)) {
+    $nombre = $fila['nombre'];
+    $sinopsis = $fila['sinopsis'];
+    $url = $fila['url'];
 
-</video>
+    echo "<h1>$nombre</h1>";
+    echo "<video src='$url' controls autoplay muted width='450' height='450'></video>";
+}
+?>
+
+</script>
 
 <?php include_once "includes/footer.php"; ?>
+

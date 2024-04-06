@@ -34,21 +34,21 @@ if (empty($_SESSION['active'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link d-flex" href="presentacion.php">
+                        <a class="nav-link d-flex" href="sesion_deportiva.php">
                             <i class=" fas fa-list mr-2 fa-2x"></i>
                             <p> Sesión deportiva</p>
                         </a>
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link d-flex" href="clientes.php">
+                        <a class="nav-link d-flex" href="registrar_deportista.php">
                             <i class=" fas fa-users mr-2 fa-2x"></i>
                             <p> Registrar Deportista</p>
                         </a>
                     </li>
                   
                     <li class="nav-item">
-                        <a class="nav-link d-flex" href="tipo.php">
+                        <a class="nav-link d-flex" href="info_deportista.php">
                             <i class=" fas fa-tags mr-2 fa-2x"></i>
                             <p> Información del deportista</p>
                         </a>
@@ -62,7 +62,7 @@ if (empty($_SESSION['active'])) {
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link d-flex" href="config.php">
+                        <a class="nav-link d-flex" href="informacion.php">
                             <i class="fas fa-cogs mr-2 fa-2x"></i>
                             <p> Info-Ángeles</p>
                         </a>

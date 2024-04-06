@@ -128,14 +128,12 @@ CREATE TABLE `permisos` (
 
 INSERT INTO `permisos` (`id`, `nombre`) VALUES
 (1, 'configuración'),
-(2, 'usuarios'),
+(2, 'profesores'),
 (3, 'clientes'),
-(4, 'productos'),
-(5, 'ventas'),
-(6, 'nueva_venta'),
-(7, 'tipos'),
-(8, 'presentacion'),
-(9, 'laboratorios');
+(4, 'ventas'),
+(5, 'tipos'),
+(6, 'presentacion'),
+(7, 'laboratorios');
 
 -- --------------------------------------------------------
 

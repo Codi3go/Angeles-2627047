@@ -1,6 +1,6 @@
 <?php
 session_start();
-$permiso = 'usuarios';
+$permiso = 'profesores';
 $id_user = $_SESSION['idUser'];
 include "../conexion.php";
 $sql = mysqli_query($conexion, "SELECT p.*, d.* FROM permisos p INNER JOIN detalle_permisos d ON p.id = d.id_permiso WHERE d.id_usuario = $id_user AND p.nombre = '$permiso'");

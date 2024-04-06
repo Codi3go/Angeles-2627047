@@ -3,11 +3,11 @@ session_start();
 require_once "../conexion.php";
 $id = $_GET['id'];
 $sqlpermisos = mysqli_query($conexion, "SELECT * FROM permisos");
-$usuarios = mysqli_query($conexion, "SELECT * FROM usuario WHERE idusuario = $id");
+$profesores = mysqli_query($conexion, "SELECT * FROM usuario WHERE idusuario = $id");
 $consulta = mysqli_query($conexion, "SELECT * FROM detalle_permisos WHERE id_usuario = $id");
-$resultUsuario = mysqli_num_rows($usuarios);
+$resultUsuario = mysqli_num_rows($profesores);
 if (empty($resultUsuario)) {
-    header("Location: usuarios.php");
+    header("Location: profesores.php");
 }
 $datos = array();
 foreach ($consulta as $asignado) {

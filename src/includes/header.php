@@ -28,7 +28,7 @@ if (empty($_SESSION['active'])) {
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link d-flex" href="usuarios.php">
+                        <a class="nav-link d-flex" href="profesores.php">
                             <i class="fas fa-user mr-2 fa-2x"></i>
                             <p> Profesores</p>
                         </a>
@@ -55,7 +55,7 @@ if (empty($_SESSION['active'])) {
                     </li>
                   
                     <li class="nav-item">
-                        <a class="nav-link d-flex" href="laboratorio.php">
+                        <a class="nav-link d-flex" href="pagos.php">
                             <i class=" fas fa-hospital mr-2 fa-2x"></i>
                             <p> Pagos</p>
                         </a>

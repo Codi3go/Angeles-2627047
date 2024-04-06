@@ -1,7 +1,7 @@
 <?php
 require "../conexion.php";
-$usuarios = mysqli_query($conexion, "SELECT * FROM usuario");
-$total['usuarios'] = mysqli_num_rows($usuarios);
+$profesores = mysqli_query($conexion, "SELECT * FROM usuario");
+$total['profesores'] = mysqli_num_rows($profesores);
 $clientes = mysqli_query($conexion, "SELECT * FROM cliente");
 $total['clientes'] = mysqli_num_rows($clientes);
 $productos = mysqli_query($conexion, "SELECT * FROM producto");

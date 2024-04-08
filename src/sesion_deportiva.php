@@ -90,6 +90,7 @@ if (!empty($_POST)) {
 
 include_once "includes/header.php"; // Incluye el encabezado de la página
 ?>
+
 <div class="card">
     <div class="card-body">
         <div class="row">
@@ -112,7 +113,18 @@ include_once "includes/header.php"; // Incluye el encabezado de la página
                             </div>
                         </div>
                         <div class="col-md-4 mt-4">
+                            <!-- Cronómetro -->
+                            <div id="cronometro">00:00:00</div>
+                            <!-- Botones para controlar el cronómetro -->
+                            <button type="button" onclick="startStop()" class="btn btn-primary">Iniciar / Detener Cronómetro</button>
+                            <button type="button" onclick="resetTimer()" class="btn btn-secondary">Reiniciar Cronómetro</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mt-4">
+                            <!-- Botón para enviar el formulario -->
                             <input type="submit" value="Registrar" class="btn btn-primary" id="btnAccion">
+                            <!-- Botón para limpiar el formulario -->
                             <input type="button" value="Nuevo" class="btn btn-success" id="btnNuevo" onclick="limpiar()">
                         </div>
                     </div>
@@ -159,4 +171,58 @@ include_once "includes/header.php"; // Incluye el encabezado de la página
         </div>
     </div>
 </div>
+
 <?php include_once "includes/footer.php"; ?> <!-- Incluye el pie de página -->
+
+<script>
+    var startTime, endTime;
+    var running = false;
+
+    function startStop() {
+        if (!running) {
+            startTime = new Date().getTime();
+            running = true;
+            updateTime();
+        } else {
+            endTime = new Date().getTime();
+            running = false;
+        }
+    }
+
+    function resetTimer() {
+        document.getElementById('cronometro').innerHTML = '00:00:00';
+        running = false;
+    }
+
+    function updateTime() {
+        var currentTime;
+        if (running) {
+            currentTime = new Date().getTime();
+        } else {
+            currentTime = endTime;
+        }
+
+        var timeDiff = currentTime - startTime;
+
+        var hours = Math.floor(timeDiff / 3600000);
+        var minutes = Math.floor((timeDiff % 3600000) / 60000);
+        var seconds = Math.floor((timeDiff % 60000) / 1000);
+
+        hours = padZero(hours);
+        minutes = padZero(minutes);
+        seconds = padZero(seconds);
+
+        document.getElementById('cronometro').innerHTML = hours + ":" + minutes + ":" + seconds;
+
+        if (running) {
+            setTimeout(updateTime, 1000);
+        }
+    }
+
+    function padZero(num) {
+        if (num < 10) {
+            return "0" + num;
+        }
+        return num;
+    }
+</script>

@@ -122,8 +122,8 @@ include_once "includes/header.php";
                         <thead class="thead-dark">
                             <tr>
                                 <th>#</th>
-                                <th>laboratorio</th>
-                                <th>Dirección</th>
+                                <th>Registro de pagos</th>
+                                <th>Valores</th>
                                 <th></th>
                             </tr>
                         </thead>

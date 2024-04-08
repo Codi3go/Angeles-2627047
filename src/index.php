@@ -1,32 +1,64 @@
 <?php
+// Requiere el archivo de conexión a la base de datos
 require "../conexion.php";
+
+// Consulta para obtener el total de profesores
 $profesores = mysqli_query($conexion, "SELECT * FROM usuario");
 $total['profesores'] = mysqli_num_rows($profesores);
+
+// Consulta para obtener el total de clientes
 $clientes = mysqli_query($conexion, "SELECT * FROM cliente");
 $total['clientes'] = mysqli_num_rows($clientes);
+
+// Consulta para obtener el total de productos
 $productos = mysqli_query($conexion, "SELECT * FROM producto");
 $total['productos'] = mysqli_num_rows($productos);
+
+// Consulta para obtener el total de ventas del día
 $ventas = mysqli_query($conexion, "SELECT * FROM ventas WHERE fecha > CURDATE()");
 $total['ventas'] = mysqli_num_rows($ventas);
+
+// Inicia la sesión
 session_start();
+
+// Incluye el encabezado de la página
 include_once "includes/header.php";
 ?>
 
 <?php
+// Consulta para obtener los datos de los vídeos
 $consulta = "SELECT * FROM misvideos";
 $resultados = mysqli_query($conexion, $consulta);
 
+// Recorre los resultados de la consulta
 while ($fila = mysqli_fetch_array($resultados)) {
+    // Obtiene los datos de cada vídeo
     $nombre = $fila['nombre'];
     $sinopsis = $fila['sinopsis'];
     $url = $fila['url'];
 
-    echo "<h1>$nombre</h1>";
-    echo "<video src='$url' controls autoplay muted width='450' height='450'></video>";
+    // Define la visión y la misión del club deportivo
+    $vision = "Ser reconocidos como el mejor club deportivo de la región, promoviendo el desarrollo integral de nuestros deportistas.";
+    $mision = "Brindar oportunidades de formación deportiva de calidad, inculcando valores de respeto, disciplina y trabajo en equipo.";
 }
 ?>
 
-</script>
+<div class="video-container">
+    <!-- Muestra el vídeo -->
+    <video src="<?php echo $url; ?>" autoplay muted loop></video>
+    <div class="content">
+        <!-- Muestra el título y la sinopsis del vídeo -->
+        <h1><?php echo $nombre; ?></h1>
+        <p><?php echo $sinopsis; ?></p>
+        <!-- Muestra la visión y la misión del club deportivo -->
+        <h2>Visión</h2>
+        <p><?php echo $vision; ?></p>
+        <h2>Misión</h2>
+        <p><?php echo $mision; ?></p>
+    </div>
+</div>
 
-<?php include_once "includes/footer.php"; ?>
-
+<?php
+// Incluye el pie de página
+include_once "includes/footer.php";
+?>

@@ -1,22 +1,31 @@
 <?php
+// Inicia la sesión
 session_start();
+
+// Incluye el archivo de conexión a la base de datos
+include "../conexion.php";
+
+// Verifica si el usuario tiene el permiso necesario
 $permiso = 'profesores';
 $id_user = $_SESSION['idUser'];
-include "../conexion.php";
 $sql = mysqli_query($conexion, "SELECT p.*, d.* FROM permisos p INNER JOIN detalle_permisos d ON p.id = d.id_permiso WHERE d.id_usuario = $id_user AND p.nombre = '$permiso'");
 $existe = mysqli_fetch_all($sql);
 if (empty($existe) && $id_user != 1) {
     header('Location: permisos.php');
 }
+
+// Procesa los datos enviados por el formulario
 if (!empty($_POST)) {
     $id = $_POST['id'];
     $nombre = $_POST['nombre'];
     $email = $_POST['correo'];
     $user = $_POST['usuario'];
     $alert = "";
+
+    // Verifica si los campos requeridos están vacíos
     if (empty($nombre) || empty($email) || empty($user)) {
         $alert = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    Todo los campos son obligatorio
+                    Todos los campos son obligatorios
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -26,7 +35,7 @@ if (!empty($_POST)) {
             $clave = $_POST['clave'];
             if (empty($clave)) {
                 $alert = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    La contraseña es requerido
+                    La contraseña es requerida
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -81,6 +90,8 @@ if (!empty($_POST)) {
         }
     }
 }
+
+// Incluye el encabezado de la página
 include "includes/header.php";
 ?>
 <div class="card">
@@ -94,21 +105,18 @@ include "includes/header.php";
                         <input type="text" class="form-control" placeholder="Ingrese Nombre" name="nombre" id="nombre">
                         <input type="hidden" id="id" name="id">
                     </div>
-
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="correo">Correo</label>
                         <input type="email" class="form-control" placeholder="Ingrese Correo Electrónico" name="correo" id="correo">
                     </div>
-
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="usuario">Usuario</label>
                         <input type="text" class="form-control" placeholder="Ingrese Usuario" name="usuario" id="usuario">
                     </div>
-
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
@@ -140,7 +148,6 @@ include "includes/header.php";
             if ($result > 0) {
                 while ($data = mysqli_fetch_assoc($query)) { ?>
                     <tr>
-
                         <td><?php echo $data['idusuario']; ?></td>
                         <td><?php echo $data['nombre']; ?></td>
                         <td><?php echo $data['correo']; ?></td>
@@ -158,4 +165,7 @@ include "includes/header.php";
         </tbody>
     </table>
 </div>
-<?php include_once "includes/footer.php"; ?>
+<?php
+// Incluye el pie de página
+include_once "includes/footer.php";
+?>

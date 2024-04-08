@@ -1,19 +1,32 @@
 <?php
+// Inicia la sesión
 session_start();
+
+// Incluye el archivo de conexión a la base de datos
 include "../conexion.php";
+
+// Obtiene el ID de usuario de la sesión
 $id_user = $_SESSION['idUser'];
+
+// Define el permiso necesario
 $permiso = "laboratorios";
+
+// Consulta para verificar el permiso del usuario
 $sql = mysqli_query($conexion, "SELECT p.*, d.* FROM permisos p INNER JOIN detalle_permisos d ON p.id = d.id_permiso WHERE d.id_usuario = $id_user AND p.nombre = '$permiso'");
 $existe = mysqli_fetch_all($sql);
+
+// Si no tiene el permiso y no es un usuario administrador, redirecciona a la página de permisos
 if (empty($existe) && $id_user != 1) {
     header('Location: permisos.php');
 }
 
+// Si se enviaron datos mediante el formulario
 if (!empty($_POST)) {
     $alert = "";
+    // Si algún campo está vacío, muestra una alerta
     if (empty($_POST['laboratorio']) || empty($_POST['direccion'])) {
         $alert = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        Todo los campos son obligatorio
+                        Todos los campos son obligatorios
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -72,6 +85,8 @@ if (!empty($_POST)) {
     }
     mysqli_close($conexion);
 }
+
+// Incluye el encabezado de la página
 include_once "includes/header.php";
 ?>
 <div class="card">

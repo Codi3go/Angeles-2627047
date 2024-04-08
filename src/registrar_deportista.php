@@ -1,7 +1,14 @@
 <?php
+// Inicia la sesión
 session_start();
+
+// Incluye el archivo de conexión a la base de datos
 include "../conexion.php";
+
+// Obtiene el ID de usuario de la sesión
 $id_user = $_SESSION['idUser'];
+
+// Verifica si el usuario tiene el permiso necesario
 $permiso = "clientes";
 $sql = mysqli_query($conexion, "SELECT p.*, d.* FROM permisos p INNER JOIN detalle_permisos d ON p.id = d.id_permiso WHERE d.id_usuario = $id_user AND p.nombre = '$permiso'");
 $existe = mysqli_fetch_all($sql);
@@ -9,11 +16,12 @@ if (empty($existe) && $id_user != 1) {
     header('Location: permisos.php');
 }
 
+// Procesa los datos enviados por el formulario
 if (!empty($_POST)) {
     $alert = "";
     if (empty($_POST['nombre']) || empty($_POST['telefono']) || empty($_POST['direccion'])) {
         $alert = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        Todo los campos son obligatorio
+                        Todos los campos son obligatorios
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -52,7 +60,7 @@ if (!empty($_POST)) {
                     </div>';
                 }
             }
-        }else{
+        } else {
             $sql_update = mysqli_query($conexion, "UPDATE cliente SET nombre = '$nombre' , telefono = '$telefono', direccion = '$direccion' WHERE idcliente = $id");
             if ($sql_update) {
                 $alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -73,6 +81,8 @@ if (!empty($_POST)) {
     }
     mysqli_close($conexion);
 }
+
+// Incluye el encabezado de la página
 include_once "includes/header.php";
 ?>
 <div class="card">
@@ -122,8 +132,8 @@ include_once "includes/header.php";
                         </thead>
                         <tbody>
                             <?php
+                            // Consulta los clientes desde la base de datos
                             include "../conexion.php";
-
                             $query = mysqli_query($conexion, "SELECT * FROM cliente");
                             $result = mysqli_num_rows($query);
                             if ($result > 0) {
@@ -143,7 +153,6 @@ include_once "includes/header.php";
                             <?php }
                             } ?>
                         </tbody>
-
                     </table>
                 </div>
             </div>

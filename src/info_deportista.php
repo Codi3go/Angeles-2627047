@@ -1,19 +1,32 @@
 <?php
+// Inicia la sesión
 session_start();
+
+// Incluye el archivo de conexión a la base de datos
 include "../conexion.php";
+
+// Obtiene el ID de usuario de la sesión
 $id_user = $_SESSION['idUser'];
+
+// Define el permiso necesario
 $permiso = "tipos";
+
+// Consulta para verificar el permiso del usuario
 $sql = mysqli_query($conexion, "SELECT p.*, d.* FROM permisos p INNER JOIN detalle_permisos d ON p.id = d.id_permiso WHERE d.id_usuario = $id_user AND p.nombre = '$permiso'");
 $existe = mysqli_fetch_all($sql);
+
+// Si no tiene el permiso y no es un usuario administrador, redirecciona a la página de permisos
 if (empty($existe) && $id_user != 1) {
     header('Location: permisos.php');
 }
 
+// Si se envió el formulario
 if (!empty($_POST)) {
     $alert = "";
+    // Si el campo nombre está vacío, muestra una alerta
     if (empty($_POST['nombre'])) {
         $alert = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        Todo los campos son obligatorio
+                        Todos los campos son obligatorios
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -22,6 +35,7 @@ if (!empty($_POST)) {
         $id = $_POST['id'];
         $nombre = $_POST['nombre'];
         $result = 0;
+        // Si no se envió un ID, verifica si el tipo ya existe
         if (empty($id)) {
             $query = mysqli_query($conexion, "SELECT * FROM tipos WHERE tipo = '$nombre'");
             $result = mysqli_fetch_array($query);
@@ -33,6 +47,7 @@ if (!empty($_POST)) {
                         </button>
                     </div>';
             } else {
+                // Inserta el nuevo tipo
                 $query_insert = mysqli_query($conexion, "INSERT INTO tipos(tipo) values ('$nombre')");
                 if ($query_insert) {
                     $alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -51,6 +66,7 @@ if (!empty($_POST)) {
                 }
             }
         } else {
+            // Actualiza el tipo existente
             $sql_update = mysqli_query($conexion, "UPDATE tipos SET tipo = '$nombre' WHERE id = $id");
             if ($sql_update) {
                 $alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -69,8 +85,11 @@ if (!empty($_POST)) {
             }
         }
     }
+    // Cierra la conexión a la base de datos
     mysqli_close($conexion);
 }
+
+// Incluye el encabezado de la página
 include_once "includes/header.php";
 ?>
 <div class="card">
@@ -106,8 +125,10 @@ include_once "includes/header.php";
                         </thead>
                         <tbody>
                             <?php
+                            // Incluye nuevamente el archivo de conexión a la base de datos
                             include "../conexion.php";
 
+                            // Consulta para obtener los tipos
                             $query = mysqli_query($conexion, "SELECT * FROM tipos");
                             $result = mysqli_num_rows($query);
                             if ($result > 0) {
@@ -117,6 +138,7 @@ include_once "includes/header.php";
                                         <td><?php echo $data['tipo']; ?></td>
                                         <td style="width: 200px;">
                                             <a href="#" onclick="editarTipo(<?php echo $data['id']; ?>)" class="btn btn-primary"><i class='fas fa-edit'></i></a>
+                                            <!-- Formulario para eliminar el tipo -->
                                             <form action="eliminar_tipo.php?id=<?php echo $data['id']; ?>" method="post" class="confirmar d-inline">
                                                 <button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
                                             </form>

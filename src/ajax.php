@@ -1,11 +1,14 @@
 <?php
 require_once "../conexion.php";
 session_start();
+
+// Búsqueda de clientes por nombre
 if (isset($_GET['q'])) {
     $datos = array();
     $nombre = $_GET['q'];
     $cliente = mysqli_query($conexion, "SELECT * FROM cliente WHERE nombre LIKE '%$nombre%'");
     while ($row = mysqli_fetch_assoc($cliente)) {
+        // Recopila los datos del cliente
         $data['id'] = $row['idcliente'];
         $data['label'] = $row['nombre'];
         $data['direccion'] = $row['direccion'];
@@ -14,12 +17,14 @@ if (isset($_GET['q'])) {
     }
     echo json_encode($datos);
     die();
-}else if (isset($_GET['pro'])) {
+} else if (isset($_GET['pro'])) {
+    // Búsqueda de productos
     $datos = array();
     $nombre = $_GET['pro'];
     $hoy = date('Y-m-d');
     $producto = mysqli_query($conexion, "SELECT * FROM producto WHERE codigo LIKE '%" . $nombre . "%' OR descripcion LIKE '%" . $nombre . "%' AND vencimiento > '$hoy' OR vencimiento = '0000-00-00'");
     while ($row = mysqli_fetch_assoc($producto)) {
+        // Recopila los datos del producto
         $data['id'] = $row['codproducto'];
         $data['label'] = $row['codigo'] . ' - ' .$row['descripcion'];
         $data['value'] = $row['descripcion'];
@@ -29,11 +34,13 @@ if (isset($_GET['q'])) {
     }
     echo json_encode($datos);
     die();
-}else if (isset($_GET['detalle'])) {
+} else if (isset($_GET['detalle'])) {
+    // Búsqueda de detalles
     $id = $_SESSION['idUser'];
     $datos = array();
     $detalle = mysqli_query($conexion, "SELECT d.*, p.codproducto, p.descripcion FROM detalle_temp d INNER JOIN producto p ON d.id_producto = p.codproducto WHERE d.id_usuario = $id");
     while ($row = mysqli_fetch_assoc($detalle)) {
+        // Recopila los detalles de la venta temporal
         $data['id'] = $row['id'];
         $data['descripcion'] = $row['descripcion'];
         $data['cantidad'] = $row['cantidad'];
@@ -45,6 +52,7 @@ if (isset($_GET['q'])) {
     echo json_encode($datos);
     die();
 } else if (isset($_GET['delete_detalle'])) {
+    // Elimina un detalle de la venta temporal
     $id_detalle = $_GET['id'];
     $query = mysqli_query($conexion, "DELETE FROM detalle_temp WHERE id = $id_detalle");
     if ($query) {
@@ -55,6 +63,7 @@ if (isset($_GET['q'])) {
     echo $msg;
     die();
 } else if (isset($_GET['procesarVenta'])) {
+    // Procesa la venta
     $id_cliente = $_GET['id'];
     $id_user = $_SESSION['idUser'];
     $consulta = mysqli_query($conexion, "SELECT total, SUM(total) AS total_pagar FROM detalle_temp WHERE id_usuario = $id_user");
@@ -67,6 +76,7 @@ if (isset($_GET['q'])) {
         $ultimoId = $resultId['total'];
         $consultaDetalle = mysqli_query($conexion, "SELECT * FROM detalle_temp WHERE id_usuario = $id_user");
         while ($row = mysqli_fetch_assoc($consultaDetalle)) {
+            // Inserta detalles de venta
             $id_producto = $row['id_producto'];
             $cantidad = $row['cantidad'];
             $desc = $row['descuento'];
@@ -79,6 +89,7 @@ if (isset($_GET['q'])) {
             $stock = mysqli_query($conexion, "UPDATE producto SET existencia = $stockTotal WHERE codproducto = $id_producto");
         } 
         if ($insertarDet) {
+            // Elimina detalles temporales después de la venta
             $eliminar = mysqli_query($conexion, "DELETE FROM detalle_temp WHERE id_usuario = $id_user");
             $msg = array('id_cliente' => $id_cliente, 'id_venta' => $ultimoId);
         } 
@@ -87,7 +98,8 @@ if (isset($_GET['q'])) {
     }
     echo json_encode($msg);
     die();
-}else if (isset($_GET['descuento'])) {
+} else if (isset($_GET['descuento'])) {
+    // Aplica descuento
     $id = $_GET['id'];
     $desc = $_GET['desc'];
     $consulta = mysqli_query($conexion, "SELECT * FROM detalle_temp WHERE id = $id");
@@ -102,37 +114,43 @@ if (isset($_GET['q'])) {
     }
     echo json_encode($msg);
     die();
-}else if(isset($_GET['editarCliente'])){
+} else if(isset($_GET['editarCliente'])){
+    // Edita cliente
     $idcliente = $_GET['id'];
     $sql = mysqli_query($conexion, "SELECT * FROM cliente WHERE idcliente = $idcliente");
     $data = mysqli_fetch_array($sql);
     echo json_encode($data);
     exit;
 } else if (isset($_GET['editarUsuario'])) {
+    // Edita usuario
     $idusuario = $_GET['id'];
     $sql = mysqli_query($conexion, "SELECT * FROM usuario WHERE idusuario = $idusuario");
     $data = mysqli_fetch_array($sql);
     echo json_encode($data);
     exit;
 } else if (isset($_GET['editarProducto'])) {
+    // Edita producto
     $id = $_GET['id'];
     $sql = mysqli_query($conexion, "SELECT * FROM producto WHERE codproducto = $id");
     $data = mysqli_fetch_array($sql);
     echo json_encode($data);
     exit;
 } else if (isset($_GET['editarTipo'])) {
+    // Edita tipo de producto
     $id = $_GET['id'];
     $sql = mysqli_query($conexion, "SELECT * FROM tipos WHERE id = $id");
     $data = mysqli_fetch_array($sql);
     echo json_encode($data);
     exit;
 } else if (isset($_GET['editarPresent'])) {
+    // Edita presentación de producto
     $id = $_GET['id'];
     $sql = mysqli_query($conexion, "SELECT * FROM presentacion WHERE id = $id");
     $data = mysqli_fetch_array($sql);
     echo json_encode($data);
     exit;
 } else if (isset($_GET['editarLab'])) {
+    // Edita laboratorio de producto
     $id = $_GET['id'];
     $sql = mysqli_query($conexion, "SELECT * FROM laboratorios WHERE id = $id");
     $data = mysqli_fetch_array($sql);
@@ -140,6 +158,7 @@ if (isset($_GET['q'])) {
     exit;
 }
 if (isset($_POST['regDetalle'])) {
+    // Registra detalle de venta
     $id = $_POST['id'];
     $cant = $_POST['cant'];
     $precio = $_POST['precio'];
@@ -167,7 +186,8 @@ if (isset($_POST['regDetalle'])) {
     }
     echo json_encode($msg);
     die();
-}else if (isset($_POST['cambio'])) {
+} else if (isset($_POST['cambio'])) {
+    // Cambia la contraseña del usuario
     if (empty($_POST['actual']) || empty($_POST['nueva'])) {
         $msg = 'Los campos estan vacios';
     } else {

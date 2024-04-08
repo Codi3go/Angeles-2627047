@@ -1,34 +1,52 @@
 <?php
 session_start();
 require_once "../conexion.php";
+
+// Obtener el ID del usuario de la URL
 $id = $_GET['id'];
+
+// Consultar todos los permisos disponibles
 $sqlpermisos = mysqli_query($conexion, "SELECT * FROM permisos");
-$usuarios = mysqli_query($conexion, "SELECT * FROM usuario WHERE idusuario = $id");
-$consulta = mysqli_query($conexion, "SELECT * FROM detalle_permisos WHERE id_usuario = $id");
-$resultUsuario = mysqli_num_rows($usuarios);
+
+// Consultar el usuario específico por su ID
+$profesores = mysqli_query($conexion, "SELECT * FROM usuario WHERE idusuario = $id");
+
+// Verificar si el usuario existe
+$resultUsuario = mysqli_num_rows($profesores);
 if (empty($resultUsuario)) {
-    header("Location: usuarios.php");
+    header("Location: profesores.php");
 }
+
+// Obtener los permisos asignados al usuario
+$consulta = mysqli_query($conexion, "SELECT * FROM detalle_permisos WHERE id_usuario = $id");
 $datos = array();
 foreach ($consulta as $asignado) {
     $datos[$asignado['id_permiso']] = true;
 }
+
+// Procesar el formulario de asignación de permisos
 if (isset($_POST['permisos'])) {
     $id_user = $_GET['id'];
     $permisos = $_POST['permisos'];
+
+    // Eliminar todos los permisos previamente asignados al usuario
     mysqli_query($conexion, "DELETE FROM detalle_permisos WHERE id_usuario = $id_user");
+
+    // Asignar los nuevos permisos seleccionados
     if ($permisos != "") {
         foreach ($permisos as $permiso) {
             $sql = mysqli_query($conexion, "INSERT INTO detalle_permisos(id_usuario, id_permiso) VALUES ($id_user,$permiso)");
         }
         $alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                        Permisos Asignado
+                        Permisos Asignados
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>';
     }
 }
+
+// Incluir el encabezado de la página
 include_once "includes/header.php";
 ?>
 
@@ -58,4 +76,5 @@ include_once "includes/header.php";
         </div>
     </div>
 </div>
+
 <?php include_once "includes/footer.php"; ?>

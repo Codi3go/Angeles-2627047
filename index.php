@@ -83,7 +83,7 @@
         <?php echo (isset($alert)) ? $alert : '' ; ?> <!-- Muestra cualquier alerta generada -->
         <div class="card">
             <div class="card-header card-header-primary text-center">
-                <h4 class="card-title">Bienvenido a la web oficial del club de baloncesto Ángeles</h4> <!-- Título de la tarjeta -->
+                <h4 class="card-title">Bienvenidofffff a la web oficial del club de baloncesto Ángeles</h4> <!-- Título de la tarjeta -->
                 <img class="img-thumbnail" src="assets/img/logo.png" width="150"/> <!-- Logo del club -->
             </div>
             <div class="card-body">

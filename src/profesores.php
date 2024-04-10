@@ -55,7 +55,7 @@ if (!empty($_POST)) {
                     $query_insert = mysqli_query($conexion, "INSERT INTO usuario(nombre,correo,usuario,clave) values ('$nombre', '$email', '$user', '$clave')");
                     if ($query_insert) {
                         $alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Usuario Registrado
+                    Profesor Registrado
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -74,7 +74,7 @@ if (!empty($_POST)) {
             $sql_update = mysqli_query($conexion, "UPDATE usuario SET nombre = '$nombre', correo = '$email' , usuario = '$user' WHERE idusuario = $id");
             if ($sql_update) {
                 $alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Usuario Modificado
+                    Profesor Modificado
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -131,7 +131,7 @@ include "includes/header.php";
     </div>
 </div>
 <div class="table-responsive">
-    <table class="table table-hover table-striped table-bordered mt-2" id="tbl">
+    <table class="table table-hover table-striped table-bordered mt-2" id="tbl" style="color: black;">
         <thead class="thead-dark">
             <tr>
                 <th>#</th>
@@ -155,7 +155,7 @@ include "includes/header.php";
                         <td>
                             <a href="rol.php?id=<?php echo $data['idusuario']; ?>" class="btn btn-warning"><i class='fas fa-key'></i></a>
                             <a href="#" onclick="editarUsuario(<?php echo $data['idusuario']; ?>)" class="btn btn-success"><i class='fas fa-edit'></i></a>
-                            <form action="eliminar_usuario.php?id=<?php echo $data['idusuario']; ?>" method="post" class="confirmar d-inline">
+                            <form action="eliminar_profesor.php?id=<?php echo $data['idusuario']; ?>" method="post" class="confirmar d-inline">
                                 <button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
                             </form>
                         </td>

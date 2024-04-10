@@ -41,7 +41,7 @@ if (!empty($_POST)) {
             $result = mysqli_fetch_array($query);
             if ($result > 0) {
                 $alert = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        El Laboratorio ya existe
+                        El pago ya fue realizado
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -50,14 +50,14 @@ if (!empty($_POST)) {
                 $query_insert = mysqli_query($conexion, "INSERT INTO laboratorios(laboratorio, direccion) values ('$laboratorio', '$direccion')");
                 if ($query_insert) {
                     $alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                        Laboratorio registrado
+                        Pago registrado
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>';
                 } else {
                     $alert = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        Error al registrar
+                        Error al registrar pago
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -141,7 +141,7 @@ include_once "includes/header.php";
                                         <td><?php echo $data['direccion']; ?></td>
                                         <td style="width: 200px;">
                                             <a href="#" onclick="editarLab(<?php echo $data['id']; ?>)" class="btn btn-primary"><i class='fas fa-edit'></i></a>
-                                            <form action="eliminar_lab.php?id=<?php echo $data['id']; ?>" method="post" class="confirmar d-inline">
+                                            <form action="eliminar_pago.php?id=<?php echo $data['id']; ?>" method="post" class="confirmar d-inline">
                                                 <button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
                                             </form>
                                         </td>

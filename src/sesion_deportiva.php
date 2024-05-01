@@ -4,10 +4,10 @@ session_start(); // Inicia la sesión
 include "../conexion.php"; // Incluye el archivo de conexión a la base de datos
 
 $id_user = $_SESSION['idUser']; // Obtiene el ID del usuario de la sesión actual
-$permiso = "presentacion"; // Define el nombre del permiso requerido para acceder a esta página
+$permiso = "sesion_deportiva"; // Define el nombre del permiso requerido para acceder a esta página
 
 // Consulta si el usuario tiene el permiso necesario
-$sql = mysqli_query($conexion, "SELECT p.*, d.* FROM permisos p INNER JOIN detalle_permisos d ON p.id = d.id_permiso WHERE d.id_usuario = $id_user AND p.nombre = '$permiso'");
+$sql = mysqli_query($conexion, "SELECT p.*, d.* FROM permisos p INNER JOIN detalle_permisos d ON p.id = d.id_permiso WHERE d.id_profesor = $id_user AND p.nombre = '$permiso'");
 $existe = mysqli_fetch_all($sql);
 
 // Si el usuario no tiene el permiso y no es el administrador (id 1), lo redirige a la página de permisos
@@ -35,7 +35,7 @@ if (!empty($_POST)) {
         // Si no se proporcionó un ID, se está insertando un nuevo registro
         if (empty($id)) {
             // Verifica si ya existe una presentación con el mismo nombre
-            $query = mysqli_query($conexion, "SELECT * FROM presentacion WHERE nombre = '$nombre'");
+            $query = mysqli_query($conexion, "SELECT * FROM sesion_deportiva WHERE nombre = '$nombre'");
             $result = mysqli_fetch_array($query);
 
             if ($result > 0) {
@@ -47,7 +47,7 @@ if (!empty($_POST)) {
                     </div>';
             } else {
                 // Inserta la nueva presentación en la base de datos
-                $query_insert = mysqli_query($conexion, "INSERT INTO presentacion(nombre, nombre_corto) values ('$nombre', '$nombre_corto')");
+                $query_insert = mysqli_query($conexion, "INSERT INTO sesion_deportiva(nombre, nombre_corto) values ('$nombre', '$nombre_corto')");
 
                 if ($query_insert) {
                     $alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -66,7 +66,7 @@ if (!empty($_POST)) {
                 }
             }
         } else { // Si se proporcionó un ID, se está actualizando un registro existente
-            $sql_update = mysqli_query($conexion, "UPDATE presentacion SET nombre = '$nombre', nombre_corto = '$nombre_corto' WHERE id = $id");
+            $sql_update = mysqli_query($conexion, "UPDATE sesion_deportiva SET nombre = '$nombre', nombre_corto = '$nombre_corto' WHERE id = $id");
 
             if ($sql_update) {
                 $alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -145,7 +145,7 @@ include_once "includes/header.php"; // Incluye el encabezado de la página
                             <?php
                             include "../conexion.php";
 
-                            $query = mysqli_query($conexion, "SELECT * FROM presentacion");
+                            $query = mysqli_query($conexion, "SELECT * FROM sesion_deportiva");
                             $result = mysqli_num_rows($query);
                             if ($result > 0) {
                                 while ($data = mysqli_fetch_assoc($query)) { ?>
@@ -154,7 +154,7 @@ include_once "includes/header.php"; // Incluye el encabezado de la página
                                         <td><?php echo $data['nombre']; ?></td>
                                         <td><?php echo $data['nombre_corto']; ?></td>
                                         <td style="width: 200px;">
-                                            <!-- Enlaces para editar y eliminar presentaciones -->
+                                            <!-- Enlaces para editar y eliminar sesion_deportiva -->
                                             <a href="#" onclick="editarPresent(<?php echo $data['id']; ?>)" class="btn btn-primary"><i class='fas fa-edit'></i></a>
                                             <form action="eliminar_present.php?id=<?php echo $data['id']; ?>" method="post" class="confirmar d-inline">
                                                 <button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>

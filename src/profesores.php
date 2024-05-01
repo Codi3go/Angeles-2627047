@@ -8,7 +8,7 @@ include "../conexion.php";
 // Verifica si el usuario tiene el permiso necesario
 $permiso = 'profesores';
 $id_user = $_SESSION['idUser'];
-$sql = mysqli_query($conexion, "SELECT p.*, d.* FROM permisos p INNER JOIN detalle_permisos d ON p.id = d.id_permiso WHERE d.id_usuario = $id_user AND p.nombre = '$permiso'");
+$sql = mysqli_query($conexion, "SELECT p.*, d.* FROM permisos p INNER JOIN detalle_permisos d ON p.id = d.id_permiso WHERE d.id_profesor = $id_user AND p.nombre = '$permiso'");
 $existe = mysqli_fetch_all($sql);
 if (empty($existe) && $id_user != 1) {
     header('Location: permisos.php');
@@ -42,7 +42,7 @@ if (!empty($_POST)) {
                 </div>';
             } else {
                 $clave = md5($_POST['clave']);
-                $query = mysqli_query($conexion, "SELECT * FROM usuario where correo = '$email'");
+                $query = mysqli_query($conexion, "SELECT * FROM profesor where correo = '$email'");
                 $result = mysqli_fetch_array($query);
                 if ($result > 0) {
                     $alert = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -52,10 +52,10 @@ if (!empty($_POST)) {
                     </button>
                 </div>';
                 } else {
-                    $query_insert = mysqli_query($conexion, "INSERT INTO usuario(nombre,correo,usuario,clave) values ('$nombre', '$email', '$user', '$clave')");
+                    $query_insert = mysqli_query($conexion, "INSERT INTO profesor(nombre,correo,usuario,clave) values ('$nombre', '$email', '$user', '$clave')");
                     if ($query_insert) {
                         $alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Usuario Registrado
+                    Profesor Registrado
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -71,10 +71,10 @@ if (!empty($_POST)) {
                 }
             }
         } else {
-            $sql_update = mysqli_query($conexion, "UPDATE usuario SET nombre = '$nombre', correo = '$email' , usuario = '$user' WHERE idusuario = $id");
+            $sql_update = mysqli_query($conexion, "UPDATE profesor SET nombre = '$nombre', correo = '$email' , usuario = '$user' WHERE idprofesor = $id");
             if ($sql_update) {
                 $alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Usuario Modificado
+                    Profesor Modificado
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -131,7 +131,7 @@ include "includes/header.php";
     </div>
 </div>
 <div class="table-responsive">
-    <table class="table table-hover table-striped table-bordered mt-2" id="tbl">
+    <table class="table table-hover table-striped table-bordered mt-2" id="tbl" style="color: black;">
         <thead class="thead-dark">
             <tr>
                 <th>#</th>
@@ -143,19 +143,19 @@ include "includes/header.php";
         </thead>
         <tbody>
             <?php
-            $query = mysqli_query($conexion, "SELECT * FROM usuario");
+            $query = mysqli_query($conexion, "SELECT * FROM profesor");
             $result = mysqli_num_rows($query);
             if ($result > 0) {
                 while ($data = mysqli_fetch_assoc($query)) { ?>
                     <tr>
-                        <td><?php echo $data['idusuario']; ?></td>
+                        <td><?php echo $data['idprofesor']; ?></td>
                         <td><?php echo $data['nombre']; ?></td>
                         <td><?php echo $data['correo']; ?></td>
                         <td><?php echo $data['usuario']; ?></td>
                         <td>
-                            <a href="rol.php?id=<?php echo $data['idusuario']; ?>" class="btn btn-warning"><i class='fas fa-key'></i></a>
-                            <a href="#" onclick="editarUsuario(<?php echo $data['idusuario']; ?>)" class="btn btn-success"><i class='fas fa-edit'></i></a>
-                            <form action="eliminar_usuario.php?id=<?php echo $data['idusuario']; ?>" method="post" class="confirmar d-inline">
+                            <a href="rol.php?id=<?php echo $data['idprofesor']; ?>" class="btn btn-warning"><i class='fas fa-key'></i></a>
+                            <a href="#" onclick="editarUsuario(<?php echo $data['idprofesor']; ?>)" class="btn btn-success"><i class='fas fa-edit'></i></a>
+                            <form action="eliminar_profesor.php?id=<?php echo $data['idprofesor']; ?>" method="post" class="confirmar d-inline">
                                 <button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
                             </form>
                         </td>

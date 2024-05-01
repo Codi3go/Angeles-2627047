@@ -9,10 +9,10 @@ include "../conexion.php";
 $id_user = $_SESSION['idUser'];
 
 // Define el permiso necesario
-$permiso = "tipos";
+$permiso = "informacion_deportista";
 
 // Consulta para verificar el permiso del usuario
-$sql = mysqli_query($conexion, "SELECT p.*, d.* FROM permisos p INNER JOIN detalle_permisos d ON p.id = d.id_permiso WHERE d.id_usuario = $id_user AND p.nombre = '$permiso'");
+$sql = mysqli_query($conexion, "SELECT p.*, d.* FROM permisos p INNER JOIN detalle_permisos d ON p.id = d.id_permiso WHERE d.id_profesor = $id_user AND p.nombre = '$permiso'");
 $existe = mysqli_fetch_all($sql);
 
 // Si no tiene el permiso y no es un usuario administrador, redirecciona a la página de permisos
@@ -35,9 +35,9 @@ if (!empty($_POST)) {
         $id = $_POST['id'];
         $nombre = $_POST['nombre'];
         $result = 0;
-        // Si no se envió un ID, verifica si el tipo ya existe
+        // Si no se envió un ID, verifica si el informacion_deportista ya existe
         if (empty($id)) {
-            $query = mysqli_query($conexion, "SELECT * FROM tipos WHERE tipo = '$nombre'");
+            $query = mysqli_query($conexion, "SELECT * FROM informacion_deportista WHERE tipo = '$nombre'");
             $result = mysqli_fetch_array($query);
             if ($result > 0) {
                 $alert = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -47,8 +47,8 @@ if (!empty($_POST)) {
                         </button>
                     </div>';
             } else {
-                // Inserta el nuevo tipo
-                $query_insert = mysqli_query($conexion, "INSERT INTO tipos(tipo) values ('$nombre')");
+                // Inserta el nuevo informacion_deportista
+                $query_insert = mysqli_query($conexion, "INSERT INTO informacion_deportista(tipo) values ('$nombre')");
                 if ($query_insert) {
                     $alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
                         Tipo registrado
@@ -66,8 +66,8 @@ if (!empty($_POST)) {
                 }
             }
         } else {
-            // Actualiza el tipo existente
-            $sql_update = mysqli_query($conexion, "UPDATE tipos SET tipo = '$nombre' WHERE id = $id");
+            // Actualiza el informacion_deportista existente
+            $sql_update = mysqli_query($conexion, "UPDATE informacion_deportista SET tipo = '$nombre' WHERE id = $id");
             if ($sql_update) {
                 $alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
                         Tipo Modificado
@@ -128,8 +128,8 @@ include_once "includes/header.php";
                             // Incluye nuevamente el archivo de conexión a la base de datos
                             include "../conexion.php";
 
-                            // Consulta para obtener los tipos
-                            $query = mysqli_query($conexion, "SELECT * FROM tipos");
+                            // Consulta para obtener la informacion_deportista
+                            $query = mysqli_query($conexion, "SELECT * FROM informacion_deportista");
                             $result = mysqli_num_rows($query);
                             if ($result > 0) {
                                 while ($data = mysqli_fetch_assoc($query)) { ?>

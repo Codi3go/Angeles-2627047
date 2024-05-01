@@ -9,10 +9,10 @@ require_once "../conexion.php";
 $id_user = $_SESSION['idUser'];
 
 // Define el permiso necesario
-$permiso = "info";
+$permiso = "info_angeles";
 
 // Consulta para verificar el permiso del usuario
-$sql = mysqli_query($conexion, "SELECT p.*, d.* FROM permisos p INNER JOIN detalle_permisos d ON p.id = d.id_permiso WHERE d.id_usuario = $id_user AND p.nombre = '$permiso'");
+$sql = mysqli_query($conexion, "SELECT p.*, d.* FROM permisos p INNER JOIN detalle_permisos d ON p.id = d.id_permiso WHERE d.id_profesor = $id_user AND p.nombre = '$permiso'");
 $existe = mysqli_fetch_all($sql);
 
 // Si no tiene el permiso y no es un usuario administrador, redirecciona a la página de permisos
@@ -21,7 +21,7 @@ if (empty($existe) && $id_user != 1) {
 }
 
 // Consulta para obtener la información básica
-$query = mysqli_query($conexion, "SELECT * FROM info");
+$query = mysqli_query($conexion, "SELECT * FROM info_angeles");
 $data = mysqli_fetch_assoc($query);
 
 // Si se enviaron datos mediante el formulario
@@ -40,7 +40,7 @@ if ($_POST) {
         $direccion = $_POST['direccion'];
         $id = $_POST['id'];
         // Actualiza los datos en la base de datos
-        $update = mysqli_query($conexion, "UPDATE info SET nombre = '$nombre', telefono = '$telefono', email = '$email', direccion = '$direccion' WHERE id = $id");
+        $update = mysqli_query($conexion, "UPDATE info_angeles SET nombre = '$nombre', telefono = '$telefono', email = '$email', direccion = '$direccion' WHERE id = $id");
         // Si la actualización fue exitosa, muestra una alerta
         if ($update) {
             $alert = '<div class="alert alert-success" role="alert">

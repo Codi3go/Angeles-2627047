@@ -9,10 +9,10 @@ include "../conexion.php";
 $id_user = $_SESSION['idUser'];
 
 // Define el permiso necesario
-$permiso = "laboratorios";
+$permiso = "pagos";
 
 // Consulta para verificar el permiso del usuario
-$sql = mysqli_query($conexion, "SELECT p.*, d.* FROM permisos p INNER JOIN detalle_permisos d ON p.id = d.id_permiso WHERE d.id_usuario = $id_user AND p.nombre = '$permiso'");
+$sql = mysqli_query($conexion, "SELECT p.*, d.* FROM permisos p INNER JOIN detalle_permisos d ON p.id = d.id_permiso WHERE d.id_profesor = $id_user AND p.nombre = '$permiso'");
 $existe = mysqli_fetch_all($sql);
 
 // Si no tiene el permiso y no es un usuario administrador, redirecciona a la página de permisos
@@ -37,27 +37,27 @@ if (!empty($_POST)) {
         $direccion = $_POST['direccion'];
         $result = 0;
         if (empty($id)) {
-            $query = mysqli_query($conexion, "SELECT * FROM laboratorios WHERE laboratorio = '$laboratorio'");
+            $query = mysqli_query($conexion, "SELECT * FROM pagos WHERE laboratorio = '$laboratorio'");
             $result = mysqli_fetch_array($query);
             if ($result > 0) {
                 $alert = '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        El Laboratorio ya existe
+                        El pago ya fue realizado
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>';
             } else {
-                $query_insert = mysqli_query($conexion, "INSERT INTO laboratorios(laboratorio, direccion) values ('$laboratorio', '$direccion')");
+                $query_insert = mysqli_query($conexion, "INSERT INTO pagos(laboratorio, direccion) values ('$laboratorio', '$direccion')");
                 if ($query_insert) {
                     $alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                        Laboratorio registrado
+                        Pago registrado
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>';
                 } else {
                     $alert = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        Error al registrar
+                        Error al registrar pago
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -65,7 +65,7 @@ if (!empty($_POST)) {
                 }
             }
         } else {
-            $sql_update = mysqli_query($conexion, "UPDATE laboratorios SET laboratorio = '$laboratorio', direccion = '$direccion' WHERE id = $id");
+            $sql_update = mysqli_query($conexion, "UPDATE pagos SET laboratorio = '$laboratorio', direccion = '$direccion' WHERE id = $id");
             if ($sql_update) {
                 $alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
                         Laboratorio Modificado
@@ -131,7 +131,7 @@ include_once "includes/header.php";
                             <?php
                             include "../conexion.php";
 
-                            $query = mysqli_query($conexion, "SELECT * FROM laboratorios");
+                            $query = mysqli_query($conexion, "SELECT * FROM pagos");
                             $result = mysqli_num_rows($query);
                             if ($result > 0) {
                                 while ($data = mysqli_fetch_assoc($query)) { ?>
@@ -141,7 +141,7 @@ include_once "includes/header.php";
                                         <td><?php echo $data['direccion']; ?></td>
                                         <td style="width: 200px;">
                                             <a href="#" onclick="editarLab(<?php echo $data['id']; ?>)" class="btn btn-primary"><i class='fas fa-edit'></i></a>
-                                            <form action="eliminar_lab.php?id=<?php echo $data['id']; ?>" method="post" class="confirmar d-inline">
+                                            <form action="eliminar_pago.php?id=<?php echo $data['id']; ?>" method="post" class="confirmar d-inline">
                                                 <button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
                                             </form>
                                         </td>

@@ -12,7 +12,7 @@ $id_user = $_SESSION['idUser'];
 $permiso = 'presentacion';
 
 // Consulta para verificar los permisos del usuario
-$sql = mysqli_query($conexion, "SELECT p.*, d.* FROM permisos p INNER JOIN detalle_permisos d ON p.id = d.id_permiso WHERE d.id_usuario = $id_user AND p.nombre = '$permiso'");
+$sql = mysqli_query($conexion, "SELECT p.*, d.* FROM permisos p INNER JOIN detalle_permisos d ON p.id = d.id_permiso WHERE d.id_profesor = $id_user AND p.nombre = '$permiso'");
 
 // Obtiene los resultados de la consulta
 $existe = mysqli_fetch_all($sql);
@@ -29,7 +29,7 @@ if (!empty($_GET['id'])) {
     $id = $_GET['id'];
 
     // Elimina la presentación de la base de datos
-    $query_delete = mysqli_query($conexion, "DELETE FROM presentacion WHERE id = $id");
+    $query_delete = mysqli_query($conexion, "DELETE FROM sesion_deportiva WHERE id = $id");
 
     // Cierra la conexión a la base de datos
     mysqli_close($conexion);

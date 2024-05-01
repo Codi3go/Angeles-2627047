@@ -3,20 +3,12 @@
 require "../conexion.php";
 
 // Consulta para obtener el total de profesores
-$profesores = mysqli_query($conexion, "SELECT * FROM usuario");
+$profesores = mysqli_query($conexion, "SELECT * FROM profesor");
 $total['profesores'] = mysqli_num_rows($profesores);
 
 // Consulta para obtener el total de clientes
-$clientes = mysqli_query($conexion, "SELECT * FROM cliente");
-$total['clientes'] = mysqli_num_rows($clientes);
-
-// Consulta para obtener el total de productos
-$productos = mysqli_query($conexion, "SELECT * FROM producto");
-$total['productos'] = mysqli_num_rows($productos);
-
-// Consulta para obtener el total de ventas del día
-$ventas = mysqli_query($conexion, "SELECT * FROM ventas WHERE fecha > CURDATE()");
-$total['ventas'] = mysqli_num_rows($ventas);
+$deportistas = mysqli_query($conexion, "SELECT * FROM deportista");
+$total['deportista'] = mysqli_num_rows($deportistas);
 
 // Inicia la sesión
 session_start();

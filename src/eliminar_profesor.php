@@ -9,7 +9,7 @@ require("../conexion.php");
 $id_user = $_SESSION['idUser'];
 
 // Define el permiso requerido
-$permiso = 'tipos';
+$permiso = "profesores";
 
 // Consulta para verificar los permisos del usuario
 $sql = mysqli_query($conexion, "SELECT p.*, d.* FROM permisos p INNER JOIN detalle_permisos d ON p.id = d.id_permiso WHERE d.id_profesor = $id_user AND p.nombre = '$permiso'");
@@ -23,18 +23,18 @@ if (empty($existe) && $id_user != 1) {
     header("Location: permisos.php");
 }
 
-// Verifica si se proporciona un ID para eliminar un tipo
+// Verifica si se proporciona un ID para eliminar un profesor
 if (!empty($_GET['id'])) {
-    // Obtiene el ID del tipo a eliminar
+    // Obtiene el ID del profesor a eliminar
     $id = $_GET['id'];
 
-    // Elimina el tipo de la base de datos
-    $query_delete = mysqli_query($conexion, "DELETE FROM tipos WHERE id = $id");
+    // Elimina el profesor de la base de datos
+    $query_delete = mysqli_query($conexion, "DELETE FROM profesor WHERE idprofesor = $id");
 
     // Cierra la conexión a la base de datos
     mysqli_close($conexion);
 
-    // Redirige de vuelta a la página de información del deportista
-    header("Location:info_deportista.php");
+    // Redirige de vuelta a la página de profesores
+    header("Location: profesores.php");
 }
 ?>

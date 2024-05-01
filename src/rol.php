@@ -9,7 +9,7 @@ $id = $_GET['id'];
 $sqlpermisos = mysqli_query($conexion, "SELECT * FROM permisos");
 
 // Consultar el usuario específico por su ID
-$profesores = mysqli_query($conexion, "SELECT * FROM usuario WHERE idusuario = $id");
+$profesores = mysqli_query($conexion, "SELECT * FROM profesor WHERE idprofesor = $id");
 
 // Verificar si el usuario existe
 $resultUsuario = mysqli_num_rows($profesores);
@@ -18,7 +18,7 @@ if (empty($resultUsuario)) {
 }
 
 // Obtener los permisos asignados al usuario
-$consulta = mysqli_query($conexion, "SELECT * FROM detalle_permisos WHERE id_usuario = $id");
+$consulta = mysqli_query($conexion, "SELECT * FROM detalle_permisos WHERE id_profesor = $id");
 $datos = array();
 foreach ($consulta as $asignado) {
     $datos[$asignado['id_permiso']] = true;
@@ -30,12 +30,12 @@ if (isset($_POST['permisos'])) {
     $permisos = $_POST['permisos'];
 
     // Eliminar todos los permisos previamente asignados al usuario
-    mysqli_query($conexion, "DELETE FROM detalle_permisos WHERE id_usuario = $id_user");
+    mysqli_query($conexion, "DELETE FROM detalle_permisos WHERE id_profesor = $id_user");
 
     // Asignar los nuevos permisos seleccionados
     if ($permisos != "") {
         foreach ($permisos as $permiso) {
-            $sql = mysqli_query($conexion, "INSERT INTO detalle_permisos(id_usuario, id_permiso) VALUES ($id_user,$permiso)");
+            $sql = mysqli_query($conexion, "INSERT INTO detalle_permisos(id_profesor, id_permiso) VALUES ($id_user,$permiso)");
         }
         $alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
                         Permisos Asignados
